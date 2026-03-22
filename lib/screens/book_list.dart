@@ -12,7 +12,7 @@ class BookList extends StatelessWidget {
     {
       'coverImagePath': 'assets/images/the-alchemist.jpg',
       'title': 'The Alchemist',
-      'author': 'Coelho Paulo',
+      'author': 'Paulo Coelho',
       'price': 1000,
     },
     {
@@ -22,39 +22,46 @@ class BookList extends StatelessWidget {
       'price': 1500,
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA), // Soft modern background
       appBar: AppBar(
-        title: Text('Ceylon Bookstore'),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView.builder(
-            itemCount: books.length,
-            itemBuilder: (context, index) {
-              final book = books[index];
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Book(
-                      coverImagePath: book['coverImagePath'],
-                      title: book['title'],
-                      author: book['author'],
-                      price: book['price'],
-                      textColor: Colors.blueGrey,
-                    ),
-                  ),
-                  SizedBox(height: 10), // Add space between books
-                ],
-              );
-            },
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        title: const Text(
+          'Ceylon Bookstore',
+          style: TextStyle(
+            color: Color(0xFF2D3142),
+            fontWeight: FontWeight.w800,
+            fontSize: 24,
+            letterSpacing: -0.5,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_bag_outlined, color: Color(0xFF2D3142)),
+            onPressed: () {
+              // Open cart action
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.only(top: 10, bottom: 40),
+        itemCount: books.length,
+        itemBuilder: (context, index) {
+          final book = books[index];
+          return Book(
+            coverImagePath: book['coverImagePath']!,
+            title: book['title']!,
+            author: book['author']!,
+            price: book['price'] as int,
+          );
+        },
       ),
     );
   }

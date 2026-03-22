@@ -5,140 +5,115 @@ class Book extends StatelessWidget {
   final String title;
   final String author;
   final int price;
-  final Color textColor;
 
   const Book({
+    Key? key,
     required this.coverImagePath,
     required this.title,
     required this.author,
     required this.price,
-    this.textColor = Colors.black,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Center align children horizontally
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: textColor,
-              ),
-              textAlign: TextAlign.center, // Center align text
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left Side: Book Cover
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
             ),
-            SizedBox(height: 5),
-            Text(
-              author,
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 14,
-                color: textColor,
-              ),
-              textAlign: TextAlign.center, // Center align text
-            ),
-            SizedBox(height: 10),
-            Image.asset(
+            child: Image.asset(
               coverImagePath,
-              height: 200,
+              width: 130,
+              height: 190,
               fit: BoxFit.cover,
             ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center align row horizontally
-              children: [
-                Text(
-                  'Rs. $price',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: textColor,
+          ),
+          
+          // Right Side: Book Details
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                      color: Color(0xFF2D3142),
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                SizedBox(width: 6), // Add some space between price and button
-                ElevatedButton(
-                  onPressed: () {
-                    // Add to cart functionality here
-                    print('Added to cart: $title');
-                  },
-                  child: Text('Add to cart'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
+                  const SizedBox(height: 6),
+                  Text(
+                    author,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  Text(
+                    'Rs. $price',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        // Add to cart functionality here
+                        debugPrint('Added to cart: $title');
+                      },
+                      icon: const Icon(Icons.shopping_cart_outlined, size: 18),
+                      label: const Text(
+                        'Add to Cart',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: BookList(),
-  ));
-}
-
-class BookList extends StatelessWidget {
-  final List<Map<String, dynamic>> books = [
-    {
-      'coverImagePath': 'assets/images/rich-dad-poor-dad.jpg',
-      'title': 'Rich Dad, Poor Dad',
-      'author': 'Robert T. Kiyosaki',
-      'price': 1250,
-    },
-    {
-      'coverImagePath': 'assets/images/the-alchemist.jpg',
-      'title': 'The Alchemist',
-      'author': 'Coelho Paulo',
-      'price': 1000,
-    },
-    {
-      'coverImagePath': 'assets/images/men-are-from-mars.jpg',
-      'title': 'Men Are From Mars',
-      'author': 'John Gray',
-      'price': 1500,
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ceylon Bookstore'),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: books.length,
-          itemBuilder: (context, index) {
-            final book = books[index];
-            return Book(
-              coverImagePath: book['coverImagePath'],
-              title: book['title'],
-              author: book['author'],
-              price: book['price'],
-              textColor: Colors.blueGrey,
-            );
-          },
-        ),
+          ),
+        ],
       ),
     );
   }

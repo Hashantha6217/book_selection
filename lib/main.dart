@@ -12,8 +12,11 @@ class CeylonBookstoreApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ceylon Bookstore',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primaryColor: const Color(0xFF4F46E5), // Indigo Accent
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4F46E5)),
+        scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Roboto', // Ensures standard fallback, adapts automatically
       ),
       home: BookList(),
     );
